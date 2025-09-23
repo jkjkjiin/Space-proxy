@@ -32,6 +32,7 @@ const app = Fastify({
 await app.register(fastifyCookie);
 [
   { root: join(import.meta.dirname, "public"), prefix: "/", decorateReply: true },
+  { root: libcurl, prefix: "/libcurl/" },
   { root: epoxyPath, prefix: "/epoxy/" },
   { root: baremuxPath, prefix: "/baremux/" },
   { root: bareModulePath, prefix: "/baremod/" },
