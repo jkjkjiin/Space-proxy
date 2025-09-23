@@ -8,6 +8,7 @@ import { access } from "node:fs/promises";
 import { createServer, ServerResponse } from "node:http";
 import { createBareServer } from "@tomphttp/bare-server-node";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
+import { libcurlPath } from '@mercuryworkshop/libcurl-transport';
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { bareModulePath } from "@mercuryworkshop/bare-as-module3";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
@@ -30,11 +31,11 @@ const app = Fastify({
 
 await app.register(fastifyCookie);
 [
-  { root: join(import.meta.dirname, "dist"), prefix: "/", decorateReply: true },
+  { root: join(import.meta.dirname, "public"), prefix: "/", decorateReply: true },
   { root: epoxyPath, prefix: "/epoxy/" },
   { root: baremuxPath, prefix: "/baremux/" },
   { root: bareModulePath, prefix: "/baremod/" },
-  { root: join(import.meta.dirname, "dist/uv"), prefix: "/_dist_uv/" },
+  { root: join(import.meta.dirname, "public/js"), prefix: "/_dist_uv/" },
   { root: uvPath, prefix: "/_uv/" }
 ].forEach(r => app.register(fastifyStatic, { ...r, decorateReply: r.decorateReply||false }));
 
@@ -54,7 +55,7 @@ const proxy = (url, type="application/javascript") => async (req, reply) => {
   } catch { return reply.code(500).send(); }
 };
 
-app.get("/assets/img/*", proxy(req => `https://dogeub-assets.pages.dev/img/${req.params["*"]}`, ""));
+app.get("//*", proxy(req => `${req.params["*"]}`, ""));
 app.get("/js/script.js", proxy(()=> "https://byod.privatedns.org/js/script.js"));
 
 app.get("/return", async (req, reply) =>
@@ -66,7 +67,7 @@ app.get("/return", async (req, reply) =>
 
 app.setNotFoundHandler((req, reply) =>
   req.raw.method==="GET" && req.headers.accept?.includes("text/html")
-    ? reply.sendFile("index.html")
+    ? reply.sendFile("public/index.html")
     : reply.code(404).send({ error: "Not Found" })
 );
 
