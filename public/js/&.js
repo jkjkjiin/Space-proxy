@@ -259,26 +259,24 @@ async function registerSW() {
 			});
 	}
 }
-// register event listeners for shit
-if (address1) {
-	address1.addEventListener('keydown', function (event) {
+// Register event listeners for both search bars to always update URL with ?q=...
+function handleSearchBarEnter(inputElem) {
+	if (!inputElem) return;
+	inputElem.addEventListener('keydown', function (event) {
 		if (event.key === 'Enter') {
 			event.preventDefault();
-			let query = address1.value;
-			executeSearch(query);
+			const query = inputElem.value;
+			if (query) {
+				window.location.href = '/&?q=' + encodeURIComponent(query);
+			}
 		}
 	});
 }
-if (address2) {
-	address2.addEventListener('keydown', function (event) {
-		if (event.key === 'Enter') {
-			event.preventDefault();
-			let query = address2.value;
-			executeSearch(query);
-		}
-	});
-}
+handleSearchBarEnter(typeof address1 !== 'undefined' ? address1 : document.getElementById('gointospace'));
+handleSearchBarEnter(typeof address2 !== 'undefined' ? address2 : document.getElementById('gointospace2'));
 // Make it so that if the user goes to /&?q= it searches it
+
+// Enhanced: Update URL with ?q= when searching
 document.addEventListener('DOMContentLoaded', function () {
 	const urlParams = new URLSearchParams(window.location.search);
 	const queryParam = urlParams.get('q');
@@ -290,9 +288,22 @@ document.addEventListener('DOMContentLoaded', function () {
 			return false;
 		}
 	}
+
+	// Attach handler to the search form to update URL with ?q=...
+	const form = document.getElementById('formintospace');
+	if (form) {
+		form.addEventListener('submit', function (event) {
+			event.preventDefault();
+			const input = document.getElementById('gointospace');
+			if (input && input.value) {
+				// Set the URL to /&?q=searchterm
+				window.location.href = '/&?q=' + encodeURIComponent(input.value);
+			}
+		});
+	}
+
 	if (queryParam) {
 		if (isValidUrl(queryParam)) {
-			// If q is a valid URL, proxy it directly
 			document.querySelector('.pPage').id = 'navactive';
 			executeSearch(queryParam);
 		} else {
