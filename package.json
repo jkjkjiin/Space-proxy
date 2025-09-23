@@ -30,6 +30,7 @@
     "fastify": "^5.4.0",
     "movement.css": "^1.1.2",
     "node-fetch": "^3.3.2",
+    "node-libcurl": "^4.1.0",
     "nprogress": "^0.2.0",
     "radix-ui": "^1.4.2",
     "react": "^19.1.0",
