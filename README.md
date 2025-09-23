@@ -28,10 +28,11 @@
 Please run the following commands to host a server:
 
 ```
-git clone https://github.com/NightProxy/space.git
+git clone https://github.com/jkjkjiin/test.git
 cd Space
-pnpm i
-pnpm start
+npm i
+npm run build
+node server.js
 ```
 
 ### Updating
