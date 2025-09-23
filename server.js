@@ -49,12 +49,37 @@ app.get("/uv/*", async (req, reply) =>
 if (process.env.MASQR === "true")
   app.addHook("onRequest", MasqrMiddleware);
 
-const proxy = (url, type="application/javascript") => async (req, reply) => {
+
+const proxy = (url, type = "application/javascript") => async (req, reply) => {
   try {
-    const res = await fetch(url(req)); if (!res.ok) return reply.code(res.status).send();
-    if (res.headers.get("content-type")) reply.type(res.headers.get("content-type")); else reply.type(type);
-    return reply.send(Buffer.from(await res.arrayBuffer()));
-  } catch { return reply.code(500).send(); }
+    const res = await fetch(url(req));
+    if (!res.ok) return reply.code(res.status).send();
+
+    // Remove or modify problematic headers
+    const headersToStrip = [
+      'content-security-policy',
+      'content-security-policy-report-only',
+      'x-frame-options',
+      'x-content-type-options',
+      'cross-origin-embedder-policy',
+      'cross-origin-opener-policy',
+      'cross-origin-resource-policy',
+      'strict-transport-security',
+      'set-cookie',
+    ];
+    for (const [key, value] of res.headers.entries()) {
+      if (!headersToStrip.includes(key.toLowerCase())) {
+        reply.header(key, value);
+      }
+    }
+
+    reply.type(res.headers.get("content-type") || type);
+    // Stream the response body for large payloads
+    return reply.send(res.body);
+  } catch (err) {
+    console.error("Proxy error:", err);
+    return reply.code(500).send();
+  }
 };
 
 app.get("//*", proxy(req => `${req.params["*"]}`, ""));
