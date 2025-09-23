@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" thinksproutedu-theme="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Denied</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: sans-serif;
+      background: #e1e3e6;
+      color: #1f2937;
+      text-align: center;
+    }
+    a button {
+      background: #2563eb;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      cursor: pointer;
+    }
+    a button:hover { background: #1d4ed8; }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Access Denied</h1>
+    <p>You don't have access to this website. Please stay on task.</p>
+    <a href="/" id="btn"><button>Refresh</button></a>
+  </div>
+
+  <script>
+    if(!localStorage.auth && new URL(document.all.btn.href).password){
+      localStorage.auth=1;
+      location.reload();
+    }
+  </script>
+</body>
+</html>
