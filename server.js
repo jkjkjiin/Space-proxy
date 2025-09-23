@@ -67,8 +67,40 @@ app.get("/return", async (req, reply) =>
 
 app.setNotFoundHandler((req, reply) =>
   req.raw.method==="GET" && req.headers.accept?.includes("text/html")
-    ? reply.sendFile("public/index.html")
+  ? reply.sendFile("err.html")
     : reply.code(404).send({ error: "Not Found" })
 );
+// Custom routes for HTML pages (migrated from Express routes.js)
+app.get("/", async (req, reply) => {
+  return reply.sendFile("index.html");
+});
+
+app.get("/&", async (req, reply) => {
+  return reply.sendFile("&.html");
+});
+
+app.get("/~", async (req, reply) => {
+  return reply.sendFile("~.html");
+});
+
+app.get("/g", async (req, reply) => {
+  return reply.sendFile("g.html");
+});
+
+app.get("/a", async (req, reply) => {
+  return reply.sendFile("a.html");
+});
+
+app.get("/err", async (req, reply) => {
+  return reply.sendFile("err.html");
+});
+
+app.get("/500", async (req, reply) => {
+  return reply.sendFile("500.html");
+});
+
+app.get("/password", async (req, reply) => {
+  return reply.sendFile("password.html");
+});
 
 app.listen({ port }).then(()=>console.log(`Server running on ${port}`));
