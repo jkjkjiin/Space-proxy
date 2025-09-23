@@ -38,8 +38,8 @@ export default defineConfig({
     },
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        loader: resolve(__dirname, 'src/static/loader.html'),
+        main: resolve(__dirname, 'public/index.html'),
+        loader: resolve(__dirname, ''),
       },
       output: {
         entryFileNames: '[hash].js',
@@ -66,8 +66,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/assets/img': {
-        target: 'https://dogeub-assets.pages.dev',
+      '/': {
+        target: '',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/assets\/img/, '/img'),
       },
