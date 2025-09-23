@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import Fastify from "fastify";
+import { Curl } from 'node-libcurl';
 import fastifyStatic from "@fastify/static";
 import fastifyCookie from "@fastify/cookie";
 import wisp from "wisp-server-node";
@@ -32,7 +33,7 @@ const app = Fastify({
 await app.register(fastifyCookie);
 [
   { root: join(import.meta.dirname, "public"), prefix: "/", decorateReply: true },
-  { root: libcurl, prefix: "/libcurl/" },
+  { root: libcurlPath, prefix: "/libcurl/" },,
   { root: epoxyPath, prefix: "/epoxy/" },
   { root: baremuxPath, prefix: "/baremux/" },
   { root: bareModulePath, prefix: "/baremod/" },
