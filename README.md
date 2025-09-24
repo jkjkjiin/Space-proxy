@@ -34,6 +34,13 @@ npm i
 npm run build
 node server.js
 ```
+### setting up proxy server
+
+```
+npm i
+npm run build
+node server.js
+```
 
 ### Start proxy server
 
