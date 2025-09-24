@@ -74,7 +74,7 @@
 	--dshadow4: #8400ff;
 }
 
-/*:root .halloween {
+:root .halloween {
 	--background-color: #000;
 	--header-active-background-color: rgba(255, 153, 0, 0.55);
 	--header-hover-background-color: rgba(255, 166, 0, 0.13);
@@ -147,7 +147,7 @@
 	--dshadow2: #ff9100;
 	--dshadow3: #8400ff;
 	--dshadow4: #ff6600;
-}*/
+}
 
 :root .aurora {
 	--background-color: #000;
