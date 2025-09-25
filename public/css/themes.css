@@ -605,6 +605,82 @@ rgb(194 0 255 / 40%) 100%
 --dshadow4: #aa66b4;
 }
 
+:root .nebula {
+--background-color: #000;
+--header-active-background-color: rgb(252, 7, 203) / 78%;
+--header-hover-background-color: rgba(13, 0, 255, 0.935);
+--input-background-color: #0a0a0a;
+--border-color: #525252;
+--text-color: #ffffff;
+--hover-text-color: rgba(255, 255, 255, 0.49);
+--active-text-color: rgba(255, 255, 255, 0.81);
+--utility-background-color: rgb(22, 22, 22);
+--utility-shadow-color: rgba(66, 66, 66, 0.86);
+--hr-background: rgba(160, 160, 160, 0.274);
+--navbar-background-color: rgb(22, 22, 22);
+--page-text-color: rgba(82, 82, 82, 0.97);
+--shortcut-background-color: #fff;
+--shortcut-box-shadow: 0 0 20px 1px #fff;
+--image-outline-color: #6f00ff;
+--button-background-color: #ff00ae;
+--button-gradient-color: linear-gradient(
+304deg,
+rgb(245, 0, 192) 0%,
+#4800ff 100%
+);
+--scrolltop-background-color: rgba(32, 32, 32, 0.37);
+--scrolltop-backdrop-filter: blur(10px);
+--random-btn-background-color: #0a0a0a;
+--random-btn-hover-background-color: rgb(25, 25, 25);
+--random-btn-active-background-color: rgb(15, 15, 15);
+--settingsection-background-color: #0c0c0c;
+--settingsection-background-color-hover: #101010;
+--link-hover-color: #ff00bb;
+--settingsection-hr-background: rgba(255, 255, 255, 0.22);
+--button-reg-background-color: rgb(22, 22, 22);
+--button-reg-hover-background-color: rgb(25, 25, 25);
+--button-reg-active-background-color: rgb(15, 15, 15);
+--dropdown-background-color: rgb(22, 22, 22);
+--dropdown-hover-background-color: rgb(25, 25, 25);
+--panic-key-successful-color: #24b95b;
+--panic-key-failed-color: #4800ff;
+--failtoast-background: rgb(255, 0, 200);
+--failtoast-gradient: linear-gradient(
+165deg,
+rgb(16, 12, 251) 0%,
+#ff00d9 45%
+);
+--toast-background: rgb(255, 0, 238);
+--toast-gradient: linear-gradient(
+165deg,
+rgba(0, 68, 255, 0.145) 0%,
+rgba(255, 255, 255, 0) 45%
+);
+--slider-background-color: #1900ff;
+--slider-box-shadow: inset 1px 1px 2px 0px #4800ff;
+--checkbox-background-color: rgb(175, 169, 255);
+--checkbox-gradient: linear-gradient(
+126deg,
+rgb(0, 0, 245) 0%,
+#3014ce 100%
+);
+--password-background-color: #252525;
+--password-hover-background-color: #181818;
+
+/* Widget */
+--color-header: '#fff';
+--accent-color: linear-gradient(
+101deg,
+#4000ff 0%,
+rgba(25, 0, 255, 0.4) 100%
+) !important;
+--color-header: #ff0000 !important;
+--dshadow1: #d0ff00;
+--dshadow2: #3c00ff;
+--dshadow3: #95ff00;
+--dshadow4: #2600ff;
+}
+
 :root .yellow {
 --background-color: #000;
 --header-active-background-color: rgb(228, 252, 7) / 78%;
