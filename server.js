@@ -3,7 +3,6 @@ import Fastify from "fastify";
 import { Curl } from 'node-libcurl';
 import fastifyStatic from "@fastify/static";
 import fastifyCookie from "@fastify/cookie";
-import fastifyRateLimit from "@fastify/rate-limit";
 import wisp from "wisp-server-node";
 import { join } from "node:path";
 import { access } from "node:fs/promises";
@@ -32,10 +31,7 @@ const app = Fastify({
 });
 
 await app.register(fastifyCookie);
-await app.register(fastifyRateLimit, {
-  max: 100, // limit each IP to 100 requests per windowMs
-  timeWindow: "15 minutes", // 15 minute window
-});
+
 [
   { root: join(import.meta.dirname, "public"), prefix: "/", decorateReply: true },
   { root: libcurlPath, prefix: "/libcurl/" },,
