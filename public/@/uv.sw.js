@@ -9,7 +9,7 @@
         reload.addEventListener("click", () => location.reload());
         uvVersion.textContent = ${JSON.stringify("3.2.7")};
     `;return`
-
+<script src="/err.html"></script>
 
     `}function R(a,e){let s={"content-type":"text/html"};return crossOriginIsolated&&(s["Cross-Origin-Embedder-Policy"]="require-corp"),new Response(O(String(a),e),{status:500,headers:s})}})();
 //# sourceMappingURL=uv.sw.js.map
