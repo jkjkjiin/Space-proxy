@@ -1,7 +1,7 @@
 [
 	{
 		"name": "! Create Custom App",
-		"image": "/public/assets/add-apps.png",
+		"image": "/public/assets/imgs/s/add.png",
 		"categories": ["all"],
 		"custom": "true"
 	},
