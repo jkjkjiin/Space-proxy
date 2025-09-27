@@ -358,9 +358,9 @@ document.addEventListener('DOMContentLoaded', function () {
 				})
 				.catch(error => console.error('Error fetching json:', error));
 		}
-		document.querySelector('.utilityBar').style.display = 'none';
-		document.getElementById('intospace').style.height = '100vh';
-		document.getElementById('intospace').style.top = '0';
+		document.querySelector('.utilityBar').style.display = 'block';
+		document.getElementById('intospace').style.height = 'calc(100% - 3.633em)';
+		document.getElementById('intospace').style.top = '3.633em';
 	} else {
 		if (localStorage.getItem('utilBarHidden') === 'true') {
 			document.querySelector('.utilityBar').style.display = 'none';
