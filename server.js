@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import fastifyHelmet from "@fastify/helmet";
 import Fastify from "fastify";
 import { Curl } from 'node-libcurl';
 import fastifyStatic from "@fastify/static";
@@ -16,6 +17,8 @@ import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 import { MasqrMiddleware } from "./masqr.js";
 
 dotenv.config();
+// Enforce HTTPS (redirect HTTP to HTTPS)
+ServerResponse.prototype.setMaxListeners(50);
 ServerResponse.prototype.setMaxListeners(50);
 
 const port = 2345, server = createServer(), bare = createBareServer("/seal/");
@@ -28,6 +31,21 @@ const app = Fastify({
   serverFactory: h => (server.on("request", (req,res) =>
     bare.shouldRoute(req) ? bare.routeRequest(req,res) : h(req,res)), server),
   logger: false
+
+});
+
+// Enforce HTTPS (redirect HTTP to HTTPS)
+if (process.env.FORCE_HTTPS === "true") {
+  app.addHook("onRequest", async (req, reply) => {
+    if (req.headers["x-forwarded-proto"] === "http") {
+      reply.redirect(`https://${req.headers.host}${req.raw.url}`);
+    }
+  });
+}
+
+// Secure headers
+await app.register(fastifyHelmet, {
+  contentSecurityPolicy: false,
 });
 
 await app.register(fastifyCookie);
@@ -52,11 +70,40 @@ if (process.env.MASQR === "true")
 
 
 const proxy = (url, type = "application/javascript") => async (req, reply) => {
+    // Block known tracking domains
+    const trackingDomains = [
+      'google-analytics.com', 'doubleclick.net', 'facebook.com', 'adservice.google.com',
+      'ads.yahoo.com', 'scorecardresearch.com', 'quantserve.com', 'adnxs.com',
+      'mathtag.com', 'bluekai.com', 'criteo.com', 'openx.net', 'rubiconproject.com',
+      'adroll.com', 'taboola.com', 'outbrain.com', 'bing.com', 'yandex.ru',
+      'hotjar.com', 'mixpanel.com', 'optimizely.com', 'segment.com', 'appsflyer.com',
+      'branch.io', 'adjust.com', 'kochava.com', 'sentry.io', 'cloudflareinsights.com'
+    ];
+    const targetUrl = url(req);
+    if (trackingDomains.some(domain => targetUrl.includes(domain))) {
+      return reply.code(403).send('Blocked tracking domain');
+    }
+
+    // Remove cookies from request
+    req.headers.cookie = '';
+
+    // Inject Do Not Track header
+    req.headers['dnt'] = '1';
   try {
+    // Simple in-memory cache for GET requests
+    const cache = proxy.cache || (proxy.cache = new Map());
+    const cacheKey = req.method === 'GET' ? url(req) : null;
+    if (cacheKey && cache.has(cacheKey)) {
+      const cached = cache.get(cacheKey);
+      reply.headers(cached.headers);
+      reply.type(cached.type);
+      return reply.send(cached.body);
+    }
+
     const res = await fetch(url(req));
     if (!res.ok) return reply.code(res.status).send();
 
-    // Remove or modify problematic headers
+    // Remove or modify problematic headers and tracking headers
     const headersToStrip = [
       'content-security-policy',
       'content-security-policy-report-only',
@@ -67,16 +114,50 @@ const proxy = (url, type = "application/javascript") => async (req, reply) => {
       'cross-origin-resource-policy',
       'strict-transport-security',
       'set-cookie',
+      'server',
+      'x-powered-by',
+      'x-ua-compatible',
+      'x-forwarded-for',
+      'x-real-ip',
+      'referer',
+      'user-agent',
     ];
+    let responseHeaders = {};
     for (const [key, value] of res.headers.entries()) {
       if (!headersToStrip.includes(key.toLowerCase())) {
         reply.header(key, value);
+        responseHeaders[key] = value;
       }
     }
+  // Harden cookies
+  reply.header('Set-Cookie', 'Secure; HttpOnly; SameSite=Strict');
 
-    reply.type(res.headers.get("content-type") || type);
-    // Stream the response body for large payloads
-    return reply.send(res.body);
+    // Enable compression if supported
+    const acceptEncoding = req.headers['accept-encoding'] || '';
+    let body = await res.arrayBuffer();
+    let typeHeader = res.headers.get("content-type") || type;
+    reply.type(typeHeader);
+    if (acceptEncoding.includes('br')) {
+      // Brotli compression
+      const zlib = await import('zlib');
+      body = zlib.brotliCompressSync(Buffer.from(body));
+      reply.header('Content-Encoding', 'br');
+    } else if (acceptEncoding.includes('gzip')) {
+      // Gzip compression
+      const zlib = await import('zlib');
+      body = zlib.gzipSync(Buffer.from(body));
+      reply.header('Content-Encoding', 'gzip');
+    }
+
+    // Cache GET responses
+    if (cacheKey) {
+      cache.set(cacheKey, {
+        headers: responseHeaders,
+        type: typeHeader,
+        body,
+      });
+    }
+    return reply.send(body);
   } catch (err) {
     console.error("Proxy error:", err);
     return reply.code(500).send();
