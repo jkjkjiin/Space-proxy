@@ -1,77 +1,113 @@
-// sandstone.js - parent-side bootstrap
-(function (global) {
-  function makeNonce(len = 24) {
-    const arr = new Uint8Array(len);
-    crypto.getRandomValues(arr);
-    return Array.from(arr).map(b => ('0' + b.toString(16)).slice(-2)).join('');
+// sandstone.js (excerpt / drop-in helpers)
+// Requires: node >= 14
+const http = require('http');
+const https = require('https');
+const { URL } = require('url');
+const net = require('net');
+const express = require('express');
+const rateLimit = require('express-rate-limit'); // optional dependency
+
+// Reuse sockets for performance
+const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 100 });
+const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 100 });
+
+// simple allowlist (only allow http(s) to these domains/patterns)
+const HOST_ALLOWLIST = [
+  /^https?:\/\/(www\.)?example\.com(\/|$)/i,
+  /^https?:\/\/static\.trustedcdn\.example(\/|$)/i
+];
+
+// helper: reject private/local IPs to prevent SSRF
+function isPrivateIP(ip) {
+  // covers IPv4 private ranges and loopback
+  return /^(::1|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/.test(ip);
+}
+
+async function validateTargetUrl(targetUrl) {
+  let url;
+  try { url = new URL(targetUrl); }
+  catch (e) { throw new Error('invalid-url'); }
+
+  if (!/^https?:$/.test(url.protocol)) throw new Error('unsupported-protocol');
+
+  // positive allowlist check: at least one pattern must match
+  if (!HOST_ALLOWLIST.some(rx => rx.test(targetUrl))) throw new Error('host-not-allowed');
+
+  // Resolve DNS and check IP (prevent local IPs)
+  const lookup = await new Promise((res, rej) => {
+    require('dns').lookup(url.hostname, { all: true }, (err, addresses) => {
+      if (err) return rej(err);
+      res(addresses);
+    });
+  });
+  for (const addr of lookup) {
+    if (isPrivateIP(addr.address)) throw new Error('target-resolves-to-private-ip');
   }
+  return url;
+}
 
-  function createProxyIframe() {
-    const iframe = document.createElement('iframe');
+// Express app skeleton
+const app = express();
 
-    // Strict sandbox: no same-origin, but allow scripts so pages' JS can run
-    // If you want to disallow *all* scripts, remove 'allow-scripts'.
-    iframe.setAttribute('sandbox', 'allow-scripts'); // do NOT include allow-same-origin
-    iframe.setAttribute('referrerpolicy', 'no-referrer'); // don't leak referrer
-    // Use srcdoc blank and then send content via blob or postMessage handshake
-    iframe.srcdoc = '<!doctype html><html><head></head><body></body></html>';
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.setAttribute('loading', 'lazy');
-    return iframe;
-  }
+// Basic rate-limiter (adjust to your needs)
+app.use('/proxy', rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 300 // per IP
+}));
 
-  // postMessage helper with handshake token
-  function setupIframeMessaging(iframe, onMessage, opts = {}) {
-    const token = opts.token || makeNonce();
-    const targetOrigin = '*'; // using token-based validation; you can restrict to specific origin too
+app.get('/proxy', async (req, res) => {
+  const target = req.query.url;
+  try {
+    const url = await validateTargetUrl(target);
 
-    // Parent -> iframe: send init with token. iframe must echo token back on its side.
-    function sendInit() {
-      iframe.contentWindow.postMessage({ type: 'sandstone:init', token }, targetOrigin);
-    }
+    // Build proxied request headers — whitelist only safe ones
+    const forwardHeaders = {};
+    const keep = ['accept', 'accept-encoding', 'accept-language', 'user-agent'];
+    for (const h of keep) if (req.get(h)) forwardHeaders[h] = req.get(h);
 
-    // Listen for verified messages from the frame
-    function messageHandler(e) {
-      const data = e.data || {};
-      if (!data || typeof data !== 'object') return;
-      // Expect: { type: 'sandstone:ready', token: '...' }
-      if (data.type === 'sandstone:ready' && data.token === token) {
-        // handshake completed
-        if (opts.onReady) opts.onReady();
-        return;
+    // remove cookie/referrer/authorization by default
+    // Add strict referrer policy on proxied responses (see below)
+    const options = {
+      method: 'GET',
+      headers: forwardHeaders,
+      agent: url.protocol === 'https:' ? httpsAgent : httpAgent,
+      timeout: 30_000
+    };
+
+    const client = url.protocol === 'https:' ? https : http;
+    const upstream = client.request(url, options, upstreamRes => {
+      // sanitize response headers before sending to client
+      const safeHeaders = {};
+      for (const [k, v] of Object.entries(upstreamRes.headers)) {
+        const low = k.toLowerCase();
+        if (low === 'set-cookie' || low === 'set-cookie2') continue; // strip cookies
+        if (['server', 'x-powered-by'].includes(low)) continue;
+        // allow content-type, content-length, content-encoding, cache-control, etag, last-modified
+        if (['content-type','content-length','content-encoding','cache-control','etag','last-modified'].includes(low)) {
+          safeHeaders[low] = v;
+        }
       }
-      // All other messages must include token
-      if (data.token !== token) return; // ignore forged messages
-      onMessage && onMessage(data, e);
-    }
-    window.addEventListener('message', messageHandler);
-    // attempt handshake a couple times (iframe might not be ready immediately)
-    const h = setInterval(() => {
-      try { sendInit(); } catch (err) {}
-    }, 200);
-    // stop after 5s
-    setTimeout(() => clearInterval(h), 5000);
-    return { token, destroy: () => window.removeEventListener('message', messageHandler) };
+      // Strong privacy/security headers
+      safeHeaders['referrer-policy'] = 'no-referrer';
+      safeHeaders['content-security-policy'] = "sandbox;"; // force sandboxing of proxied document
+      safeHeaders['permissions-policy'] = 'geolocation=(), microphone=(), camera=()';
+      res.writeHead(upstreamRes.statusCode, safeHeaders);
+
+      // stream body through
+      upstreamRes.pipe(res, { end: true });
+    });
+
+    upstream.on('error', e => {
+      console.error('upstream error', e);
+      if (!res.headersSent) res.status(502).send('bad gateway');
+      else res.end();
+    });
+    upstream.end();
+  } catch (err) {
+    console.warn('proxy validation failed', err.message || err);
+    res.status(400).json({ error: err.message || 'invalid request' });
   }
+});
 
-  // Example API: mount(proxyContainer, targetUrl)
-  async function mount(container, targetUrl) {
-    const iframe = createProxyIframe();
-    container.appendChild(iframe);
-
-    // set up messaging and token handshake
-    const { token } = setupIframeMessaging(iframe, (msg) => {
-      // ex: handle click events forwarded from frame, or debug logs
-      if (msg.type === 'sandstone:log') console.log('[frame]', msg.msg);
-    }, { onReady: () => {
-      // once the frame replies ready (handshake done) tell it which URL to render
-      iframe.contentWindow.postMessage({ type: 'sandstone:render', url: targetUrl, token }, '*');
-    }});
-
-    return { iframe, token };
-  }
-
-  // Expose to global
-  global.Sandstone = { mount };
-})(window);
+// start
+app.listen(8080, ()=>console.log('proxy listening'));
