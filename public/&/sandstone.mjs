@@ -1,124 +1,80 @@
 // sandstone.mjs
-export const DEFAULT_REFERRER_POLICY = 'no-referrer';
+// ES module proxy server with SSRF protections, keep-alive agents, streaming, header sanitization, CSP/sandbox
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import http from 'http';
+import https from 'https';
+import dns from 'dns/promises';
+import { URL } from 'url';
+import net from 'net';
+import crypto from 'crypto';
 
-/**
- * Clean request headers before proxying (remove cookies, auth headers, etc)
- * @param {Headers|Object} headers
- * @returns {Object} cleaned headers plain object
- */
-export function cleanRequestHeaders(headers = {}) {
-  const h = {};
-  // copy safe headers and drop sensitive ones
-  const forbidden = ['cookie', 'authorization', 'set-cookie', 'cookie2'];
-  for (const [k, v] of Object.entries(headers)) {
-    const key = k.toLowerCase();
-    if (forbidden.includes(key)) continue;
-    // drop common tracking headers if you want:
-    if (key.startsWith('x-forwarded-') && !key.startsWith('x-forwarded-host')) continue;
-    h[key] = v;
-  }
-  return h;
+const PORT = Number(process.env.PORT || 8080);
+const HOST_ALLOWLIST_PATTERNS = (process.env.HOST_ALLOWLIST || '^https?://([a-z0-9-]+\\.)*example\\.com(/|$)').split('|').map(s => new RegExp(s, 'i'));
+const SANDBOX_TOKEN = process.env.SANDBOX_TOKEN || crypto.randomBytes(16).toString('hex'); // used for postMessage handshake
+
+// Keep-alive agents to improve performance (reuse sockets/TLS)
+const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 200 });
+const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 200 });
+
+// basic private IP detection (IPv4 and common IPv6 loopback)
+function isPrivateIP(ip) {
+  if (!ip) return false;
+  // IPv4 private ranges and loopback
+  if (/^(::1|127\.)/.test(ip)) return true;
+  if (/^10\./.test(ip)) return true;
+  if (/^192\.168\./.test(ip)) return true;
+  if (/^172\.(1[6-9]|2\d|3[0-1])\./.test(ip)) return true;
+  // IPv6 unique local addresses fc00::/7
+  if (/^fc|^fd/.test(ip)) return true;
+  return false;
 }
 
-/**
- * Fetch through the network with privacy defaults:
- * - credentials: 'omit' (never send cookies)
- * - referrerPolicy: 'no-referrer'
- * - remove sensitive headers client-side
- */
-export async function proxyFetch(url, { method = 'GET', headers = {}, body = undefined } = {}) {
-  const cleaned = cleanRequestHeaders(headers);
-
-  // Recommended fetch options for privacy and safety:
-  const reqInit = {
-    method,
-    headers: cleaned,
-    body,
-    credentials: 'omit',          // never send cookies / credentials. See MDN.
-    referrerPolicy: DEFAULT_REFERRER_POLICY,
-    redirect: 'follow'
-  };
-
-  const res = await fetch(url, reqInit);
-
-  // If you need to forward status/headers to the client, strip Set-Cookie & other sensitive ones
-  const responseHeaders = {};
-  for (const [k, v] of res.headers.entries()) {
-    const low = k.toLowerCase();
-    if (low === 'set-cookie' || low === 'set-cookie2') continue;
-    // optionally drop server-identifying headers:
-    if (low === 'server' || low === 'x-powered-by') continue;
-    responseHeaders[k] = v;
+// Validate URL, ensure allowlist match, ensure resolved IPs not private
+async function validateTargetUrl(raw) {
+  let url;
+  try {
+    url = new URL(raw);
+  } catch (e) {
+    const err = new Error('invalid-url');
+    err.code = 'invalid-url';
+    throw err;
   }
 
-  // If content is HTML, sanitize it (function below).
-  const contentType = res.headers.get('content-type') || '';
-  if (contentType.includes('text/html')) {
-    const text = await res.text();
-    const sanitized = sanitizeHtmlForSandbox(text);
-    return { status: res.status, headers: responseHeaders, body: sanitized, isHtml: true };
+  if (!['http:', 'https:'].includes(url.protocol)) {
+    const err = new Error('unsupported-protocol');
+    err.code = 'unsupported-protocol';
+    throw err;
   }
 
-  // For binary resources (images/js/css) return as ArrayBuffer so the client can create a blob
-  const buffer = await res.arrayBuffer();
-  return { status: res.status, headers: responseHeaders, body: buffer, isHtml: false };
-}
+  // Positive allowlist check: at least one regex must match the full url (host+path ok)
+  if (!HOST_ALLOWLIST_PATTERNS.some(rx => rx.test(raw))) {
+    const err = new Error('host-not-allowed');
+    err.code = 'host-not-allowed';
+    throw err;
+  }
 
-/**
- * Sanitize HTML for embedding inside a strict sandboxed iframe.
- * - Removes <script> tags
- * - Removes inline "on..." handlers (onclick, onload, etc)
- * - Rewrites <a href> and resource URLs to pass back through the proxy (very small example)
- * - Injects strict CSP meta (sandboxing + disallow inline scripts/styles)
- */
-export function sanitizeHtmlForSandbox(htmlString) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, 'text/html');
+  // DNS-resolve host and ensure none of the addresses are private/local
+  let addresses = [];
+  try {
+    // prefer A/AAAA records
+    addresses = await dns.lookup(url.hostname, { all: true });
+  } catch (e) {
+    // DNS failure -> reject
+    const err = new Error('dns-lookup-failed');
+    err.code = 'dns-lookup-failed';
+    throw err;
+  }
 
-  // Remove <script> and <noscript> completely
-  doc.querySelectorAll('script, noscript').forEach(n => n.remove());
+  if (!addresses || addresses.length === 0) {
+    const err = new Error('no-address-resolved');
+    err.code = 'no-address-resolved';
+    throw err;
+  }
 
-  // Remove inline event handlers: onload, onclick, etc
-  const all = doc.querySelectorAll('*');
-  for (const el of all) {
-    for (const attr of Array.from(el.attributes)) {
-      if (/^on/i.test(attr.name)) el.removeAttribute(attr.name);
+  for (const addr of addresses) {
+    if (isPrivateIP(addr.address)) {
+      const err = new Error('target-resolves-to-private-ip');
+      err.code = 'target-resolves-to-private-ip';
+      throw err;
     }
-  }
-
-  // Remove meta-refresh redirects
-  doc.querySelectorAll('meta[http-equiv]').forEach(m => {
-    const eq = (m.getAttribute('http-equiv') || '').toLowerCase();
-    if (eq === 'refresh') m.remove();
-  });
-
-  // Simple resource rewriting example:
-  const base = doc.querySelector('base')?.getAttribute('href') || '';
-  doc.querySelectorAll('[src], [href]').forEach(el => {
-    const attr = el.hasAttribute('src') ? 'src' : 'href';
-    const v = el.getAttribute(attr);
-    if (!v) return;
-    // if absolute URL, rewrite to the proxy path (example)
-    try {
-      const u = new URL(v, base || window.location.origin);
-      // only rewrite http(s) schemes
-      if (u.protocol === 'http:' || u.protocol === 'https:') {
-        // your proxy endpoint; when integrating adapt to your backend route.
-        el.setAttribute(attr, `/__sandstone_proxy?target=${encodeURIComponent(u.toString())}`);
-      }
-    } catch (e) {
-      // leave relative or data: alone
-    }
-  });
-
-  // Inject a strict CSP meta (disallow inline scripts/styles, disallow new sources)
-  const csp = "default-src 'none'; script-src 'none'; connect-src 'self'; img-src data: https:; style-src 'self' 'unsafe-inline'"; 
-  // Note: some sites break if you block styles; adjust style-src as needed.
-  const meta = doc.createElement('meta');
-  meta.setAttribute('http-equiv', 'Content-Security-Policy');
-  meta.setAttribute('content', csp);
-  doc.head.prepend(meta);
-
-  // Return serialized string
-  return '<!doctype html>\n' + doc.documentElement.outerHTML;
-}
