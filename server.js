@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import fastifyHelmet from "@fastify/helmet";
 import Fastify from "fastify";
-import { Curl } from 'node-libcurl';
 import fastifyStatic from "@fastify/static";
 import fastifyCookie from "@fastify/cookie";
 import wisp from "wisp-server-node";
@@ -77,7 +76,7 @@ const proxy = (url, type = "application/javascript") => async (req, reply) => {
       'mathtag.com', 'bluekai.com', 'criteo.com', 'openx.net', 'rubiconproject.com',
       'adroll.com', 'taboola.com', 'outbrain.com', 'bing.com', 'yandex.ru',
       'hotjar.com', 'mixpanel.com', 'optimizely.com', 'segment.com', 'appsflyer.com',
-      'branch.io', 'adjust.com', 'kochava.com', 'sentry.io', 'cloudflareinsights.com'
+      'branch.io', 'adjust.com', 'kochava.com', 'sentry.io', 'cloudflareinsights.com',
     ];
     const targetUrl = url(req);
     if (trackingDomains.some(domain => targetUrl.includes(domain))) {
