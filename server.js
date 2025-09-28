@@ -71,12 +71,31 @@ if (process.env.MASQR === "true")
 const proxy = (url, type = "application/javascript") => async (req, reply) => {
     // Block known tracking domains
     const trackingDomains = [
-      'google-analytics.com', 'doubleclick.net', 'facebook.com', 'adservice.google.com',
-      'ads.yahoo.com', 'scorecardresearch.com', 'quantserve.com', 'adnxs.com',
-      'mathtag.com', 'bluekai.com', 'criteo.com', 'openx.net', 'rubiconproject.com',
-      'adroll.com', 'taboola.com', 'outbrain.com', 'bing.com', 'yandex.ru',
-      'hotjar.com', 'mixpanel.com', 'optimizely.com', 'segment.com', 'appsflyer.com',
-      'branch.io', 'adjust.com', 'kochava.com', 'sentry.io', 'cloudflareinsights.com',
+  'trk.pinterest.com', 'widgets.pinterest.com', 'events.reddit.com', 'events.redditmedia.com',
+  'ads.youtube.com', 'ads-api.tiktok.com', 'analytics.tiktok.com', 'ads-sg.tiktok.com', 
+  'business-api.tiktok.com', 'ads.tiktok.com', 'log.byteoversea.com', 'ads.yahoo.com',
+  'analytics.yahoo.com', 'geo.yahoo.com', 'udc.yahoo.com', 'udcm.yahoo.com', 'advertising.yahoo.com',
+  'analytics.query.yahoo.com', 'partnerads.ysm.yahoo.com', 'log.fc.yahoo.com', 'gemini.yahoo.com', 
+  'extmaps-api.yandex.net', 'analytics-sg.tiktok.com', 'adtech.yahooinc.com', 'adfstat.yandex.ru',
+  'appmetrica.yandex.ru', 'metrika.yandex.ru', 'advertising.yandex.ru', 'offerwall.yandex.net',
+  'adfox.yandex.ru', 'auction.unityads.unity3d.com', 'webview.unityads.unity3d.com','config.unityads.unity3d.com',
+  'bdapi-ads.realmemobile.com', 'bdapi-in-ads.realmemobile.com', 'api.ad.xiaomi.com', 'data.mistat.xiaomi.com',
+  'data.mistat.india.xiaomi.com', 'data.mistat.rus.xiaomi.com', 'sdkconfig.ad.xiaomi.com', 'sdkconfig.ad.intl.xiaomi.com',
+  'globalapi.ad.xiaomi.com', 'tracking.rus.miui.com', 'adsfs.oppomobile.com', 'adx.ads.oppomobile.com',
+  'ck.ads.oppomobile.com', 'data.ads.oppomobile.com', 'metrics.data.hicloud.com', 'metrics2.data.hicloud.com',
+  'grs.hicloud.com', 'logservice.hicloud.com', 'logservice1.hicloud.com', 'logbak.hicloud.com',
+  'click.oneplus.cn', 'open.oneplus.net', 'samsungads.com', 'smetrics.samsung.com', 
+  'analytics-api.samsunghealthcn.com', 'samsung-com.112.2o7.net', 'nmetrics.samsung.com', 
+  'advertising.apple.com', 'tr.iadsdk.apple.com', 'iadsdk.apple.com', 'metrics.icloud.com',
+  'metrics.apple.com', 'metrics.mzstatic.com', 'api-adservices.apple.com', 'books-analytics-events.apple.com',
+  'weather-analytics-events.apple.com', 'notes-analytics-events.apple.com', 'fwtracks.freshmarketer.com', 'adtago.s3.amazonaws.com',
+  'analytics.s3.amazonaws.com', 'advice-ads.s3.amazonaws.com', 'advertising-api-eu.amazon.com', 'pagead2.googlesyndication.com',
+  'adservice.google.com', 'afs.googlesyndication.com', 'mediavisor.doubleclick.net', 'ads30.adcolony.com',
+  'adc3-launch.adcolony.com', 'events3alt.adcolony.com', 'wd.adcolony.com', 'adservetx.media.net',
+  'analytics.google.com', 'app-measurement.com', 'click.googleanalytics.com', 'identify.hotjar.com',
+  'events.hotjar.io', 'o2.mouseflow.com', 'gtm.mouseflow.com', 'api.mouseflow.com','realtime.luckyorange.com',
+  'upload.luckyorange.net', 'cs.luckyorange.net', 'an.facebook.com', 'static.ads-twitter.com',
+  'adserver.unityads.unity3d.com', 'iot-eu-logser.realme.com', 'iot-logser.realme.com', 'ads-api.twitter.com',
     ];
     const targetUrl = url(req);
     if (trackingDomains.some(domain => targetUrl.includes(domain))) {
