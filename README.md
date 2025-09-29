@@ -70,11 +70,17 @@ To contribute to Space, clone the repo locally and submit your code in a pull
 request. If you are making large changes, please make sure you test your code
 before submitting a pull request. Please check [contributing.md](https://github.com/NightProxy/Space/blob/main/contributing.md) for a more in-depth explanation.
 
-## Contributors
+## revamp Contributors
 
 Thank you to the following people for contributing to Space.
 
 [![Contributors](https://contrib.rocks/image?repo=jkjkjiin/Space-proxy)](https://github.com/jkjkjiin/Space-proxy/graphs/contributors)
+
+## og night network Contributors
+
+Thank you to the following people for contributing to og Space.
+
+[![Contributors](https://contrib.rocks/image?repo=notzen3264/Space")](https://github.com/notzen3264/Space/graphs/contributors)
 
 ## Discord
 
