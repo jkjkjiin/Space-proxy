@@ -68,11 +68,11 @@ git pull --force --allow-unrelated-histories
 
 To contribute to Space, clone the repo locally and submit your code in a pull
 request. If you are making large changes, please make sure you test your code
-before submitting a pull request. Please check [contributing.md](https://github.com/NightProxy/Space/blob/main/contributing.md) for a more in-depth explanation.
+before submitting a pull request. Please check [contributing.md](/contributing.md) for a more in-depth explanation.
 
 ## revamp Contributors
 
-Thank you to the following people for contributing to Space.
+Thank you to the following people for contributing to Space.  Btw solojoe13 is my peronal main account account        jkjkjiin account is my school email github  
 
 [![Contributors](https://contrib.rocks/image?repo=jkjkjiin/Space-proxy)](https://github.com/jkjkjiin/Space-proxy/graphs/contributors)
 
