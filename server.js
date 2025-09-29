@@ -96,6 +96,9 @@ const proxy = (url, type = "application/javascript") => async (req, reply) => {
   'events.hotjar.io', 'o2.mouseflow.com', 'gtm.mouseflow.com', 'api.mouseflow.com','realtime.luckyorange.com',
   'upload.luckyorange.net', 'cs.luckyorange.net', 'an.facebook.com', 'static.ads-twitter.com',
   'adserver.unityads.unity3d.com', 'iot-eu-logser.realme.com', 'iot-logser.realme.com', 'ads-api.twitter.com',
+  'adroll.com', 'hotjar.com', 'mixpanel.com', 'adjust.com', 'amazon-adsystem.com',
+  'kochava.com', 'sentry.io', 'cloudflareinsights.com', 'appsflyer.com', 
+  'ad.doubleclick.net', 'google-analytics.com',  'bluekai.com',  'onelink.me',
     ];
     const targetUrl = url(req);
     if (trackingDomains.some(domain => targetUrl.includes(domain))) {
