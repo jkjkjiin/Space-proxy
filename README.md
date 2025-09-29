@@ -72,7 +72,9 @@ before submitting a pull request. Please check [contributing.md](/contributing.m
 
 ## revamp Contributors
 
-Thank you to the following people for contributing to Space.  Btw solojoe13 is my peronal main account account        jkjkjiin account is my school email github  
+Thank you to the following people for contributing to Space.         
+
+Btw solojoe13 is my peronal main account account        jkjkjiin account is my school email github.  
 
 [![Contributors](https://contrib.rocks/image?repo=jkjkjiin/Space-proxy)](https://github.com/jkjkjiin/Space-proxy/graphs/contributors)
 
