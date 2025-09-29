@@ -80,7 +80,7 @@ Thank you to the following people for contributing to Space.
 
 Thank you to the following people for contributing to og Space.
 
-[![Contributors](https://contrib.rocks/image?repo=notzen3264/Space")](https://github.com/notzen3264/Space/graphs/contributors)
+<a href="https://github.com/notzen3264/Space/graphs/contributors"> <img src="https://contrib.rocks/image?repo=notzen3264/Space"/> </a>
 
 ## Discord
 
