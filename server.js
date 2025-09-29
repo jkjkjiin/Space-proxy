@@ -99,6 +99,7 @@ const proxy = (url, type = "application/javascript") => async (req, reply) => {
   'adroll.com', 'hotjar.com', 'mixpanel.com', 'adjust.com', 'amazon-adsystem.com',
   'kochava.com', 'sentry.io', 'cloudflareinsights.com', 'appsflyer.com', 
   'ad.doubleclick.net', 'google-analytics.com',  'bluekai.com',  'onelink.me',
+  'static.doubleclick.net/instream/ad status.js',
     ];
     const targetUrl = url(req);
     if (trackingDomains.some(domain => targetUrl.includes(domain))) {
