@@ -1,5 +1,5 @@
 const config = {
-    prefix: '/!/elysium/',
+    prefix: '/M/space/',
     codec: $meteor_codecs.xor,
     debug: true,
     files: {
