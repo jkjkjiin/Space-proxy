@@ -259,105 +259,80 @@ async function registerSW() {
 			});
 	}
 }
-// Register event listeners for both search bars to always update URL with ?q=...
-function handleSearchBarEnter(inputElem) {
-	if (!inputElem) return;
-	inputElem.addEventListener('keydown', function (event) {
+// register event listeners for shit
+if (address1) {
+	address1.addEventListener('keydown', function (event) {
 		if (event.key === 'Enter') {
 			event.preventDefault();
-			const query = inputElem.value;
-			if (query) {
-				window.location.href = '/&?q=' + encodeURIComponent(query);
-			}
+			let query = address1.value;
+			executeSearch(query);
 		}
 	});
 }
-handleSearchBarEnter(typeof address1 !== 'undefined' ? address1 : document.getElementById('gointospace'));
-handleSearchBarEnter(typeof address2 !== 'undefined' ? address2 : document.getElementById('gointospace2'));
+if (address2) {
+	address2.addEventListener('keydown', function (event) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			let query = address2.value;
+			executeSearch(query);
+		}
+	});
+}
 // Make it so that if the user goes to /&?q= it searches it
-
-// Enhanced: Update URL with ?q= when searching
 document.addEventListener('DOMContentLoaded', function () {
 	const urlParams = new URLSearchParams(window.location.search);
 	const queryParam = urlParams.get('q');
-	function isValidUrl(str) {
-		try {
-			new URL(str);
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-
-	// Attach handler to the search form to update URL with ?q=...
-	const form = document.getElementById('formintospace');
-	if (form) {
-		form.addEventListener('submit', function (event) {
-			event.preventDefault();
-			const input = document.getElementById('gointospace');
-			if (input && input.value) {
-				// Set the URL to /&?q=searchterm
-				window.location.href = '/&?q=' + encodeURIComponent(input.value);
-			}
-		});
-	}
-
 	if (queryParam) {
-		if (isValidUrl(queryParam)) {
-			document.querySelector('.pPage').id = 'navactive';
-			executeSearch(queryParam);
-		} else {
-			Promise.all([
-				fetch('/json/g.json').then(response => response.json()),
-				fetch('/json/a.json').then(response => response.json()),
-				fetch('/json/s.json').then(response => response.json())
-			])
-				.then(([gData, aData, shortcutsData]) => {
-					let data = [];
-					let source = '';
+		Promise.all([
+			fetch('/json/g.json').then(response => response.json()),
+			fetch('/json/a.json').then(response => response.json()),
+			fetch('/json/s.json').then(response => response.json())
+		])
+			.then(([gData, aData, shortcutsData]) => {
+				let data = [];
+				let source = '';
 
-					if (
-						gData.some(
-							d => d.name.toLowerCase() === queryParam.toLowerCase()
-						)
-					) {
-						data = gData;
-						source = 'g';
-					} else if (
-						aData.some(
-							d => d.name.toLowerCase() === queryParam.toLowerCase()
-						)
-					) {
-						data = aData;
-						source = 'a';
-					} else if (
-						shortcutsData.some(
-							d => d.name.toLowerCase() === queryParam.toLowerCase()
-						)
-					) {
-						data = shortcutsData;
-						source = 'shortcuts';
-					}
-
-					const item = data.find(
+				if (
+					gData.some(
 						d => d.name.toLowerCase() === queryParam.toLowerCase()
-					);
+					)
+				) {
+					data = gData;
+					source = 'g';
+				} else if (
+					aData.some(
+						d => d.name.toLowerCase() === queryParam.toLowerCase()
+					)
+				) {
+					data = aData;
+					source = 'a';
+				} else if (
+					shortcutsData.some(
+						d => d.name.toLowerCase() === queryParam.toLowerCase()
+					)
+				) {
+					data = shortcutsData;
+					source = 'shortcuts';
+				}
 
-					if (item) {
-						if (source === 'g') {
-							document.querySelector('.gPage').id = 'navactive';
-						} else if (source === 'a') {
-							document.querySelector('.aPage').id = 'navactive';
-						} else {
-							document.querySelector('.pPage').id = 'navactive';
-						}
-						executeSearch(item.url);
+				const item = data.find(
+					d => d.name.toLowerCase() === queryParam.toLowerCase()
+				);
+
+				if (item) {
+					if (source === 'g') {
+						document.querySelector('.gPage').id = 'navactive';
+					} else if (source === 'a') {
+						document.querySelector('.aPage').id = 'navactive';
 					} else {
-						console.error('Param not found in json file :(');
+						document.querySelector('.pPage').id = 'navactive';
 					}
-				})
-				.catch(error => console.error('Error fetching json:', error));
-		}
+					executeSearch(item.url);
+				} else {
+					console.error('Param not found in json file :(');
+				}
+			})
+			.catch(error => console.error('Error fetching json:', error));
 		document.querySelector('.utilityBar').style.display = 'block';
 		document.getElementById('intospace').style.height = 'calc(100% - 3.633em)';
 		document.getElementById('intospace').style.top = '3.633em';
