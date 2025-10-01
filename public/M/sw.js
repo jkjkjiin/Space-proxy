@@ -1,3 +1,10 @@
+if (navigator.userAgent.includes('Firefox')) {
+    Object.defineProperty(globalThis, 'crossOriginIsolated', {
+        value: true,
+        writable: false,
+    });
+}
+
 importScripts('/M/meteor.codecs.js')
 importScripts('/M/meteor.config.js')
 importScripts('/M/meteor.bundle.js')
