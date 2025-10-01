@@ -1,3 +1,10 @@
+if (navigator.userAgent.includes('Firefox')) {
+    Object.defineProperty(globalThis, 'crossOriginIsolated', {
+        value: true,
+        writable: false,
+    });
+}
+
 importScripts("/~/eclipse.codecs.js");
 importScripts("/~/eclipse.config.js");
 importScripts("/~/eclipse.rewrite.js");
