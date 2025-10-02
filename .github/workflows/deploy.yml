@@ -31,7 +31,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build with Space
-        uses: actions/Space-build-pages@v1
+        uses: actions/Space-proxy-pages@v1
         with:
           source: ./
           destination: ./_site
