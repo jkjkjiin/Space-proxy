@@ -27,11 +27,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: jkjkjiin/checkout@v4
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: jkjkjiin/configure-pages@v5
       - name: Build with Space
-        uses: actions/Space-proxy@v1
+        uses: jkjkjiin/Space-proxy@v1
         with:
           source: ./
           destination: ./_site
