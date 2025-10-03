@@ -5,7 +5,7 @@ self.__scramjet$config = {
   files: {
       wasm: "/$/scramjet.wasm.wasm",
       worker: "/$/scramjet.all.js",
-      client: "/$/scramjet.client.js",
+      client: "/$/scramjet.bundle.js",
       shared: "/$/scramjet.shared.js",
       sync: "/$/scramjet.sync.js"
   },
