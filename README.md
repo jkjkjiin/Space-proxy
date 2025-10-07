@@ -21,10 +21,6 @@
 
 ## Deployment
 
-> [!WARNING]
-> You **can not** host Space locally via a static web hosting site
-> such as Netlify, Github Pages, and Cloudflare Pages.
-
 Please run the following commands to host a server:
 
 ```
