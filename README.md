@@ -82,4 +82,4 @@ Thank you to the following people for contributing to og Space.
 
 ## Discord
 
-[![Discord](https://invidget.switchblade.xyz/QmWUfvm4bn?theme=dark)](https://discord.gointospace.app)
+[![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=black)](https://discord.gointospace.app)
