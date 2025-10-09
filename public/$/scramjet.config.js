@@ -1,8 +1,36 @@
 // this is my custom file for my setup. however it doesn't directly interfere with the actual config variable, so the init is still needed.
 
-self.__scramjet$config = {
-  prefix: "/$/Space/",
-  files: {
+const k = new TextEncoder().encode(btoa(new Date().toISOString().slice(0, 10) + location.host).split('').reverse().join('').slice(6.7));
+self.__uv$config = {
+    prefix: "/$/Space/",
+	encodeUrl: s => {
+        if (!s) return s;
+        try {
+            const d = new TextEncoder().encode(s), o = new Uint8Array(d.length);
+            for (let i = 0; i < d.length; i++) o[i] = d[i] ^ k[i % 8];
+            return Array.from(o, b => b.toString(16).padStart(2, "0")).join("");
+        } catch { return s; }
+    },
+    decodeUrl: s => {
+        if (!s) return s;
+        try {
+            const n = Math.min(s.indexOf('?') + 1 || s.length + 1, s.indexOf('#') + 1 || s.length + 1, s.indexOf('&') + 1 || s.length + 1) - 1;
+            let h = 0;
+            for (let i = 0; i < n && i < s.length; i++) {
+                const c = s.charCodeAt(i);
+                if (!((c >= 48 && c <= 57) || (c >= 65 && c <= 70) || (c >= 97 && c <= 102))) break;
+                h = i + 1;
+            }
+            if (h < 2 || h % 2) return decodeURIComponent(s);
+            const l = h >> 1, o = new Uint8Array(l);
+            for (let i = 0; i < l; i++) {
+                const x = i << 1;
+                o[i] = parseInt(s[x] + s[x + 1], 16) ^ k[i % 8];
+            }
+            return new TextDecoder().decode(o) + s.slice(h);
+        } catch { return decodeURIComponent(s); }
+    },
+    files: {
       wasm: "/$/scramjet.wasm.wasm",
       worker: "/$/scramjet.all.js",
       client: "/$/scramjet.bundle.js",
@@ -15,37 +43,3 @@ flags: {
   serviceworkers: true,
   rewriterLogs: false,
 },
-/*  codec: {
-      encode: `if (!url) return url;
-        let result = "";
-        for (let i = 0; i < url.length; i++) {
-          result += i % 2 ? String.fromCharCode(url.charCodeAt(i) ^ 2) : url[i];
-        }
-        return encodeURIComponent(result);
-        `,
-      decode: `if (!url) return url;
-        const [input, ...search] = url.split("?");
-        let result = "";
-        const decoded = decodeURIComponent(input);
-        for (let i = 0; i < decoded.length; i++) {
-          result +=
-            i % 2 ? String.fromCharCode(decoded.charCodeAt(i) ^ 2) : decoded[i];
-        }
-        return result + (search.length ? "?" + search.join("?") : "");
-      `,
-    },*/
-    codec: {
-      encode: `
-        if (!url) return url;
-        url = url.toString();
-    
-        return btoa(encodeURIComponent(url));
-      `,
-      decode: `
-        if (!url) return url;
-        url = url.toString();
-    
-        return decodeURIComponent(atob(url));
-      `,
-    }
-};
