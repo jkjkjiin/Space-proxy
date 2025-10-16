@@ -80,6 +80,26 @@ Thank you to the following people for contributing to og Space.
 
 <a href="https://github.com/notzen3264/Space/graphs/contributors"> <img src="https://contrib.rocks/image?repo=notzen3264/Space"/> </a>
 
-## Discord
+## Nightnetwork Discord
 
-[![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=black)](https://discord.gointospace.app)
+Please join our Discord to receive support for Space, receive links from the Link Archive (our link bot), and talk with fellow users.
+
+<a href="https://discord.night-x.com">
+<img alt="Discord" src="https://img.shields.io/discord/1128826318813921350?style=for-the-badge&logo=discord&label=Join%20Discord&labelColor=grey&color=%09%237289da">
+</a>
+
+
+### Made possible thanks to:
+
+* [MercuryWorkshop/wisp-client-js](https://github.com/MercuryWorkshop/wisp-client-js)
+* [MercuryWorkshop/scramjet](https://github.com/MercuryWorkshop/scramjet)
+* [titaniumnetwork-dev/Ultraviolet](https://github.com/titaniumnetwork-dev/Ultraviolet)
+* [Eclipse-Proxy/Eclipse](https://github.com/Eclipse-Proxy/Eclipse)
+* [ading2210/Sandstone](https://github.com/ading2210/sandstone)
+* [MeteorProxy/meteor](https://github.com/MeteorProxy/meteor-old)
+
+## License
+
+This project is licensed under the **GNU Affero GPL v3**.  
+See the [LICENSE](LICENSE) file for more details.
+
