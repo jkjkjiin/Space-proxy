@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>
+
+        </title>
+        <link rel="stylesheet" href="/sm/global.css">
+        <style>
+            body {
+                max-width: 640px;
+                margin: auto;
+                text-align: center;
+            }
+            input {
+                padding: 7px;
+                margin: 5px;
+                background: black;
+                color: white;
+                border: 1px solid white;
+                border-radius: 5px;
+                max-width: 400px;
+                width: 100%;
+                transition: 0.3s;
+            }
+            input:hover {
+                filter: invert(1);
+            }
+            button {
+                padding: 8px 15px;
+                margin: 5px;
+                cursor: pointer;
+            }
+            #displayNameSection {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>
+            Sign Up Page
+        </h2>
+        <div id="signupSection">
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <br>
+            <button id="signupBtn">
+                Sign Up
+            </button>
+            <br>
+            <br>
+            <a href="login.html" class="button">
+                Go To Login
+            </a>
+        </div>
+        <div id="displayNameSection">
+            <h3>
+                Set Your Display Name
+            </h3>
+            <input type="text" id="displayNameInput" placeholder="Display Name">
+            <br>
+            <button id="saveDisplayNameBtn">
+                Save
+            </button>
+        </div>
+        <p id="status">
+        </p>
+        <script type="module" src="/sm/signup.js">
+        </script>
+    </body>
+</html>
