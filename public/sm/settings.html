@@ -1,0 +1,156 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            
+        </title>
+        <link rel="stylesheet" href="/sm/global.css">
+        <style>
+            body {
+                max-width: 640px;
+                margin: auto;
+                overflow: auto !important;
+                background: #0f0f0f;
+                color: white;
+                font-family: sans-serif;
+                text-align: center;
+            }
+            body::-webkit-scrollbar { 
+                display: none; 
+            }
+            input, button {
+                padding: 8px;
+                margin: 6px 0;
+                border-radius: 5px;
+                border: 1px solid white;
+                background: black;
+                color: white;
+                transition: 0.3s;
+            }
+            input:hover, button:hover {
+                filter: invert(1);
+            }
+            #settingsPanel {
+                display: none;
+                border:none;
+                margin-top: 20px;
+                border-radius: 10px;
+                padding: 15px;
+            }
+            ul {
+                text-align: left;
+                list-style: none;
+                padding: 0;
+            }
+            ul li {
+                background: rgba(255,255,255,0.1);
+                margin: 5px 0;
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <h2>
+                Settings
+            </h2>
+            <p id="status">
+                Checking login status...
+            </p>
+            <br>
+            <a class="button" style="width:20%" href="chat.html">
+                Go To Chat
+            </a>
+            <div id="settingsPanel">
+                <h3>
+                    Profile
+                </h3>
+                <div id="displayContainer" style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px; max-width: 400px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span>
+                            Name:
+                        </span>
+                        <textarea id="displayNameInput" placeholder="Enter Name Here" disabled maxlength="50" rows="1" style="flex: 1; resize: none; overflow: hidden; padding: 6px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+                        <button id="editDisplayBtn" title="Edit Display Name" style="cursor: pointer;">
+                            ✎
+                        </button>
+                        <button id="saveDisplayBtn" title="Save Display Name" style="display:none; cursor:pointer;">
+                            ✓
+                        </button>
+                        <button id="cancelDisplayBtn" title="Cancel Display Name Edit" style="display:none; cursor:pointer;">
+                            X
+                        </button>
+                        <small id="displayCharCount" style="text-align: right; color: grey;">
+                            0 / 20
+                        </small>
+                    </div>
+                </div>
+                Display Name Color:
+                <input type="color" id="nameColorInput" style="padding:3px;"/>
+                <button id="saveNameColorBtn">
+                    Save Name Color
+                </button>
+                <div id="bioContainer" style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px; max-width: 400px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span>
+                            Bio:
+                        </span>
+                        <textarea id="bioInput" placeholder="Enter Bio Here" disabled maxlength="50" rows="1" style="flex: 1; resize: none; overflow: hidden; padding: 6px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+                        <button id="editBioBtn" title="Edit Bio" style="cursor: pointer;">
+                            ✎
+                        </button>
+                        <button id="saveBioBtn" title="Save Bio" style="display:none; cursor:pointer;">
+                            ✓
+                        </button>
+                        <button id="cancelBioBtn" title="Cancel Edit" style="display:none; cursor:pointer;">
+                            X
+                        </button>
+                        <small id="bioCharCount" style="text-align: right; color: gray;">
+                            0 / 50
+                        </small>
+                    </div>
+                </div>
+                <div id="profileContainer">
+                </div>
+                <hr>
+                <h4>
+                    Account Info
+                </h4>
+                <hr style="border-color:darkgrey; max-width:100px; margin-top:-15px;">
+                <p>
+                    User ID: 
+                    <span id="userIdDisplay">
+                    </span>
+                </p>
+                <hr>
+                <p>
+                    Email: 
+                    <hr style="border-color:darkgrey; max-width:100px; margin-top:-15px;">
+                    <span id="userEmailDisplay">
+                    </span> 
+                    <span id="adminBadge" style="font-weight:bold;">
+                    </span>
+                </p>
+                <button id="verifyEmailBtn" style="display:none; margin-bottom:5px;">
+                    Verify Email
+                </button>
+                <hr>
+                <button id="logoutBtn">
+                    Log Out
+                </button>
+                <h4>
+                    Other Settings
+                </h4>
+                <hr>
+                <button id="resetPasswordBtn">
+                    Reset Password
+                </button>
+                <ul id="localStorageList" style="pointer-events:none;">
+                </ul>
+            </div>
+        </center>
+        <script type="module" src="/sm/settings.js">
+        </script>
+    </body>
+</html>
