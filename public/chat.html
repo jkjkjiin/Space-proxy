@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <title>
+            Chat
+        </title>
+        <link rel="icon" type="image/png" href="favicon.ico">
+        <link rel="stylesheet" href="global.css">
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100vw;
+                height: 100vh;
+                overflow:hidden;
+            }
+            input { 
+                background: #222; 
+                border: 1px solid #444; 
+                color: #eee; 
+                padding: 6px; 
+            }
+            #sidebar::-webkit-scrollbar { 
+                display: none; 
+            }
+            ::-webkit-scrollbar {
+                width: 15px; /*w*/
+                height: 20px; /*h*/
+            }
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                background-color: grey;
+                border-radius: 10px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #888;
+            }
+            ::-webkit-scrollbar-button {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="header" style="border-bottom:10px solid #121212">
+            <div style="height:3vh">
+                <span id="username" style="position:absolute; left:1%; top:1%;">
+                </span>
+                <span id="email" style="position:absolute; right:1%; top:1%">
+                </span>
+            </div>
+            <div style="text-align:center; margin-top:-1%">
+                <span id="role">
+                </span>
+            </div>
+            <div id="mentionNotif" style="display:none; cursor:pointer; color:yellow; font-weight:bold; margin-left:10px;">
+                🔔 You Were Mentioned!
+            </div>
+            <label id="mentionToggleLabel" style="margin-left:15px; cursor:pointer; color:#ccc; font-weight:bold;">
+                <input type="checkbox" id="mentionToggle" style="margin-right:5px;"> Show Mentions
+            </label>
+        </div>
+        <div id="main">
+            <div id="sidebar" style="text-align:center">
+                <h3>
+                    Channels
+                </h3>
+                <hr>
+                <ul id="channels">
+                </ul>
+                <div id="adminControls" style="display:none; margin-top:8px;">
+                    <input type="text" id="newChannelName" placeholder="New Channel" style="margin-bottom:3%">
+                    <button id="addChannelBtn">
+                        Add
+                    </button>
+                    <br>
+                    <br>
+                </div>
+                <a class="button" href="settings.html">
+                    Settings
+                </a>
+                <h3 style="margin-top:12px;">
+                    Private
+                </h3>
+                <hr>
+                <ul id="privateList">
+                </ul>
+            </div>
+            <div id="messages">
+                <div id="chatLog">
+                </div>
+                <div style="padding: 10px;">
+                    <div id="mentionHint" style="display:none; color:#aaa; font-size:0.9em; margin-bottom:4px; text-align:left;">
+                        Press Tab To Mention User
+                    </div>
+                    <textarea id="chatInput" placeholder="Type A Message" rows="3"></textarea>
+                    <button id="sendBtn">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="chat2.js">
+        </script>
+    </body>
+</html>
