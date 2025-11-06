@@ -1059,7 +1059,7 @@ function setHeader(user, name) {
 onAuthStateChanged(auth, async user => {
     if (!user) { 
         showError("Not Logged In!"); 
-        setTimeout(() => location.href = "login.html", 1000);
+        setTimeout(() => location.href = "/sm/login.html", 1000);
         return; 
     }
     currentUser = user;
