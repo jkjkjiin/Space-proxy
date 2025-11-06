@@ -815,7 +815,7 @@ async function renderChannelsFromDB() {
         li.appendChild(textNode);
         li.onclick = () => { currentPrivateUid = null; switchChannel(ch); };
         if (!currentPrivateUid && currentPath === `messages/${ch}`) li.classList.add("active");
-        if ((isOwner || currentUser.email === "infinitecodehs@gmail.com") && ch !== "General") {
+        if ((isOwner || currentUser.email === "example@gmail.org") && ch !== "General") {
             const btnWrap = document.createElement("span");
             btnWrap.style.marginLeft = "10px";
             const renameBtn = document.createElement("button");
@@ -856,7 +856,7 @@ async function renderChannelsFromDB() {
         }
         channelList.appendChild(li);
     });
-    if (isOwner || currentUser.email === "infinitecodehs@gmail.com") {
+    if (isOwner || currentUser.email === "example@gmail.org") {
         newChannelName.style.display = "inline-block";
         addChannelBtn.style.display = "inline-block";
     } else {
@@ -1039,16 +1039,16 @@ function setHeader(user, name) {
     usernameSpan.textContent = name;
     usernameSpan.style.color = currentColor;
     emailSpan.textContent = user.email;
-    if (isOwner || user.email === "infinitecodehs@gmail.com") {
+    if (isOwner || user.email === "example@gmail.org") {
         roleSpan.textContent = "Owner"; roleSpan.className = "role-owner";
         roleSpan.style.color = "lime";
-    } else if(["nitrix118@gmail.com"].includes(user.email)) {
+    } else if(["example@gmail.org"].includes(user.email)) {
         roleSpan.textContent = "Co-Owner"; roleSpan.className = "role-cOwner";
         roleSpan.style.color = "lightblue";
-    } else if (["jonloomis2000@gmail.com", "cegmnops@icloud.com", "larrytrejo200@gmail.com", "2030kallison@johnstonschools.org"].includes(user.email)) {
+    } else if (["example@gmail.org", "example@gmail.org", "example@gmail.org", "example@gmail.org"].includes(user.email)) {
         roleSpan.textContent = "Admin"; roleSpan.className = "role-admin";
         roleSpan.style.color = "blue";
-    } else if(user.email === "newsomr95@gmail.com") {
+    } else if(user.email === "example@gmail.org") {
         roleSpan.textContent = "Tester"; roleSpan.className = "role-test";
         roleSpan.style.color = "darkgoldenrod";
     } else {
@@ -1065,9 +1065,8 @@ onAuthStateChanged(auth, async user => {
     currentUser = user;
     const ownerSnap = await get(ref(db, `users/${user.uid}/profile/isOwner`));
     isOwner = ownerSnap.exists() && ownerSnap.val() === true;
-    if (user.email === "infinitecodehs@gmail.com") isOwner = true;
-    isAdmin = ["infinitecodehs@gmail.com", "nitrix118@gmail.com", "jonloomis2000@gmail.com",
-               "newsomr95@gmail.com", "cegmnops@icloud.com", "larrytrejo200@gmail.com", "2030kallison@johnstonschools.org"]
+    if (user.email === "example@gmail.org") isOwner = true;
+    isAdmin = ["ur-email@gmail.org", "example@gmail.org"]
                .includes(user.email);
     adminControls.style.display = (isAdmin || isOwner) ? "block" : "none";
     if (isAdmin && !isOwner) {
@@ -1095,7 +1094,7 @@ onAuthStateChanged(auth, async user => {
     }
 });
 addChannelBtn.onclick = async () => {
-    if (!(isOwner || currentUser.email === "infinitecodehs@gmail.com")) return;
+    if (!(isOwner || currentUser.email === "example@gmail.org")) return;
     const name = newChannelName.value.trim();
     if (!name) return;
     await set(ref(db, `channels/${name}`), true);
