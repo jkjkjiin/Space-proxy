@@ -222,6 +222,10 @@ app.get("/a", async (req, reply) => {
   return reply.sendFile("a.html");
 });
 
+app.get("/c", async (req, reply) => {
+  return reply.sendFile("chat.html");
+});
+
 app.get("/err", async (req, reply) => {
   return reply.sendFile("err.html");
 });
