@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            
+        </title>
+        <link rel="icon" type="image/png" href="favicon.ico">
+        <link rel="stylesheet" href="global.css">
+        <style>
+            body {
+                max-width: 640px;
+                margin: auto;
+                text-align: center;
+            }
+            input {
+                padding: 7px;
+                margin: 5px;
+                background: black;
+                color: white;
+                border: 1px solid white;
+                border-radius: 5px;
+                max-width: 400px;
+                width: 100%;
+                transition: 0.3s;
+            }
+            input:hover {
+                filter: invert(1);
+            }
+            button {
+                padding: 8px 15px;
+                margin: 5px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <h2>
+                Login
+            </h2>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <div>
+                <button id="loginBtn">
+                    Login
+                </button>
+                <a href="signup.html" class="button" style="margin-left:10px;">
+                    Sign Up
+                </a>
+            </div>
+            <button id="resetBtn">
+                Reset Password
+            </button>
+            <p id="status">
+            </p>
+        </center>
+        <script type="module" src="login.js">
+        </script>
+    </body>
+</html>
