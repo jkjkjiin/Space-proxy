@@ -35,7 +35,7 @@ resetMenu.appendChild(submitResetDataBtn);
 document.body.appendChild(resetMenu);
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        window.location.href = "settings.html";
+        window.location.href = "/sm/settings.html";
     }
 });
 async function handleLogin() {
