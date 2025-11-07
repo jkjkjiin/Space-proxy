@@ -170,7 +170,7 @@ function detachCurrentMessageListeners() {
 async function ensureDisplayName(user) {
     const nameSnap = await get(ref(db, `users/${user.uid}/profile/displayName`));
     if (!nameSnap.exists()) {
-        const name = (user.email === "infinitecodehs@gmail.com") ? "hacker41 ðŸ’Ž" : "User";
+        const name = (user.email === "example@gmail.org") ? "hacker41 ðŸ’Ž" : "User";
         await set(ref(db, `users/${user.uid}/profile/displayName`), name);
         currentName = name;
         localStorage.setItem("displayName", name);
@@ -559,8 +559,8 @@ async function renderMessageInstant(id, msg) {
                             if (e.key === "Enter" && !e.shiftKey) {
                                 e.preventDefault();
                                 const newText = textarea.value.trim();
-                                if (newText.length > 1000) {
-                                    showError(`Your Edited Message Is Too Long (${newText.length} Characters). Please Keep It Under 1000.`);
+                                if (newText.length > 10000) {
+                                    showError(`Your Edited Message Is Too Long (${newText.length} Characters). Please Keep It Under 10000.`);
                                     textarea.value = "";
                                     return;
                                 }
@@ -674,7 +674,7 @@ async function attachMessageListeners(msgRef) {
                 .replace(/>/g, "&gt;")
                 .replace(/\n/g, "<br>");
             const mentionRegex = /@([^\s<]+)/g;
-            safeText = safeText.replace(mentionRegex, (match, name) => {
+            safeText = safeText.replace(mentionRegex, (_match, name) => {
                 const isSelfMention = currentName && (currentName.toLowerCase() === name.toLowerCase() ||
                     currentName.toLowerCase() === name.toLowerCase().replace(" ðŸ’Ž", ""));
                 const cls = isSelfMention ? "mention-self" : "mention";
