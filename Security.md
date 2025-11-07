@@ -4,6 +4,7 @@
 
 | Version | Supported |
 | ------- | --------- |
+| v1.1.3  | ✅ Yes    |
 | v1.1.2  | ✅ Yes    |
 
 ## Why?
