@@ -3,7 +3,7 @@
     <h2>Launch into Space, the next gen proxy.</h2>
 </div>
 
-![inpreview](https://i.imgur.com/VhNNgOs.jpeg)
+![inpreview](/public/assets/Space.png)
 
 > [!IMPORTANT]
 > If you fork this repo please consider giving the original repo a
