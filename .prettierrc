@@ -1,13 +1,14 @@
-{
-  "printWidth": 100,
-  "tabWidth": 2,
-  "useTabs": false,
-  "semi": true,
-  "singleQuote": true,
-  "trailingComma": "all",
-  "bracketSpacing": true,
-  "bracketSameLine": false,
-  "arrowParens": "always",
-  "endOfLine": "auto",
-  "embeddedLanguageFormatting": "auto"
-}
+*.md
+public/,/*
+public/!/*
+public/@/*
+public/$/*
+public/&/*
+public/M/*
+public/~/*
+package-lock.json
+node_modules/**
+pnpm-lock.yaml
+.gitignore
+.gitattributes
+LICENSE
