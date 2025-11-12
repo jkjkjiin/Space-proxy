@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase.js";
-import { signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import { ref, push } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
+import { signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import { ref, push } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const loginBtn = document.getElementById("loginBtn");
