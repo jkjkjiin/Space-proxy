@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBvbTQcsL1DoipWlO0ckApzkwCZgxBYbzY",
   authDomain: "notes-27f22.firebaseapp.com",
