@@ -4,8 +4,8 @@ import {
     signOut, 
     sendPasswordResetEmail, 
     updateProfile
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import { ref, get, set, update, onValue } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import { ref, get, set, update, onValue } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
 const statusEl = document.getElementById('status');
 const settingsPanel = document.getElementById('settingsPanel');
 const updateDisplayNameBtn = document.getElementById('updateDisplayNameBtn');
@@ -314,7 +314,7 @@ logoutBtn.addEventListener("click", async () => {
     localStorage.clear();
     location.href = "login.html";
 });
-import { sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 const verifyEmailBtn = document.getElementById("verifyEmailBtn");
 verifyEmailBtn.addEventListener("click", async () => {
     if (!currentUser) return showError("No User Logged In.");
