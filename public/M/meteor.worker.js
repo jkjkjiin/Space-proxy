@@ -39,7 +39,7 @@ a,hr{color:inherit}progress,sub,sup{vertical-align:baseline}blockquote,body,dd,d
                     <button onclick="window.location.reload()" class="rounded-md border border-transparent bg-gray-800 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-900 flex-1 transition-all">
                       Reload Page
                     </button>
-                    <a href="https://github.com/meteorproxy/meteor/issues/new" target="_blank" class="rounded-md border-2 border-gray-800 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-800 hover:text-white flex-1 transition-all">
+                    <a href="https://github.com/MeteorProxy/meteor-old/issues/new" target="_blank" class="rounded-md border-2 border-gray-800 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-800 hover:text-white flex-1 transition-all">
                       Report Error
                     </a>
                   </div>
