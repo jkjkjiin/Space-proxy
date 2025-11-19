@@ -170,7 +170,7 @@ function detachCurrentMessageListeners() {
 async function ensureDisplayName(user) {
     const nameSnap = await get(ref(db, `users/${user.uid}/profile/displayName`));
     if (!nameSnap.exists()) {
-        const name = (user.email === "example@gmail.org") ? "hacker41 ðŸ’Ž" : "User";
+        const name = (user.email === "example@gmail.org") ? "- ðŸ’Ž" : "User";
         await set(ref(db, `users/${user.uid}/profile/displayName`), name);
         currentName = name;
         localStorage.setItem("displayName", name);
