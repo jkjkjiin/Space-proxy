@@ -301,6 +301,7 @@ async function renderMessageInstant(id, msg) {
         "/pfps/7.jpeg",
         "/pfps/8.jpeg",
         "/pfps/9.jpeg",
+        "/pfps/10.jpeg",
         "/pfps/f3.jpeg",
         "/pfps/kaiden.png"
     ];
@@ -559,8 +560,8 @@ async function renderMessageInstant(id, msg) {
                             if (e.key === "Enter" && !e.shiftKey) {
                                 e.preventDefault();
                                 const newText = textarea.value.trim();
-                                if (newText.length > 10000) {
-                                    showError(`Your Edited Message Is Too Long (${newText.length} Characters). Please Keep It Under 10000.`);
+                                if (newText.length > 15000) {
+                                    showError(`Your Edited Message Is Too Long (${newText.length} Characters). Please Keep It Under 15000.`);
                                     textarea.value = "";
                                     return;
                                 }
@@ -923,8 +924,8 @@ sendBtn.onclick = async () => {
         chatInput.value = "";
         return;
     }
-    if (trimmed.length > 1000) {
-        showError(`Your Message Is Too Long (${trimmed.length} Characters). Please Keep It Under 1000.`);
+    if (trimmed.length > 3500) {
+        showError(`Your Message Is Too Long (${trimmed.length} Characters). Please Keep It Under 3500.`);
         chatInput.value = "";
         return;
     }
@@ -934,7 +935,7 @@ sendBtn.onclick = async () => {
         await set(emailRef, currentUser.email);
     }
     let outgoingText = text;
-    outgoingText = outgoingText.replace(/@hacker41(\b(?!\s*ðŸ’Ž))/gi, "@hacker41 ðŸ’Ž");
+    outgoingText = outgoingText.replace(/@example936(\b(?!\s*ðŸ’Ž))/gi, "@eample936 ðŸ’Ž");
     const msg = {
         sender: currentUser.uid,
         text: outgoingText,
