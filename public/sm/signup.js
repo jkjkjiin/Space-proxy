@@ -3,8 +3,8 @@ import {
     createUserWithEmailAndPassword, 
     onAuthStateChanged, 
     updateProfile 
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
-import { ref, set, update, get } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import { ref, set, update, get } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const signupBtn = document.getElementById("signupBtn");
