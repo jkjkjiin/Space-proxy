@@ -4,8 +4,8 @@ import {
     signOut, 
     sendPasswordResetEmail, 
     updateProfile
-} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
-import { ref, get, set, update, onValue } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import { ref, get, set, update, onValue } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
 const statusEl = document.getElementById('status');
 const settingsPanel = document.getElementById('settingsPanel');
 const updateDisplayNameBtn = document.getElementById('updateDisplayNameBtn');
