@@ -314,7 +314,7 @@ logoutBtn.addEventListener("click", async () => {
     localStorage.clear();
     location.href = "login.html";
 });
-import { sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import { sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 const verifyEmailBtn = document.getElementById("verifyEmailBtn");
 verifyEmailBtn.addEventListener("click", async () => {
     if (!currentUser) return showError("No User Logged In.");
