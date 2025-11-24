@@ -92,7 +92,7 @@ saveDisplayNameBtn.addEventListener("click", async () => {
         await update(userProfileRef, {
             displayName: displayName,
         });
-        window.location.href = "/sm/settings.html";
+        window.location.href = "/cl";
     } catch (error) {
         if (error.code === "permission-denied") {
             return;
