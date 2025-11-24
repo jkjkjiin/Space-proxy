@@ -47,7 +47,7 @@ async function handleLogin() {
     }
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "settings.html";
+        window.location.href = "cl";
     } catch (error) {
         if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password") {
             showError("Invalid Credentials.");
