@@ -18,7 +18,7 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById("signupSection").style.display = "none";
         displayNameSection.style.display = "block";
     } else if (user && user.displayName) {
-        window.location.href = "settings.html";
+        window.location.href = "/cl";
     }
 });
 signupBtn.addEventListener("click", async () => {
