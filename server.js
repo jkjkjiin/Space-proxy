@@ -226,18 +226,6 @@ app.get("/c", async (req, reply) => {
   return reply.sendFile("chat.html");
 });
 
-app.get("/cl", async (req, reply) => {
-  return reply.sendFile("settings.html");
-});
-
-app.get("/cl1", async (req, reply) => {
-  return reply.sendFile("login.html");
-});
-
-app.get("/cll", async (req, reply) => {
-  return reply.sendFile("signup.html");
-});
-
 app.get("/err", async (req, reply) => {
   return reply.sendFile("err.html");
 });
