@@ -301,7 +301,6 @@ async function renderMessageInstant(id, msg) {
         "/pfps/7.jpeg",
         "/pfps/8.jpeg",
         "/pfps/9.jpeg",
-        "/pfps/10.jpeg",
         "/pfps/f3.jpeg",
         "/pfps/kaiden.png"
     ];
