@@ -312,7 +312,7 @@ resetPasswordBtn.addEventListener("click", async () => {
 logoutBtn.addEventListener("click", async () => {
     await signOut(auth);
     localStorage.clear();
-    location.href = "login.html";
+    location.href = "cl1";
 });
 import { sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 const verifyEmailBtn = document.getElementById("verifyEmailBtn");
