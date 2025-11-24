@@ -18,7 +18,7 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById("signupSection").style.display = "none";
         displayNameSection.style.display = "block";
     } else if (user && user.displayName) {
-        window.location.href = "/cl";
+        window.location.href = "/settings.html";
     }
 });
 signupBtn.addEventListener("click", async () => {
@@ -92,7 +92,7 @@ saveDisplayNameBtn.addEventListener("click", async () => {
         await update(userProfileRef, {
             displayName: displayName,
         });
-        window.location.href = "/cl";
+        window.location.href = "/settings.html";
     } catch (error) {
         if (error.code === "permission-denied") {
             return;
