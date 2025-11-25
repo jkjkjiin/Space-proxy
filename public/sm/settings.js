@@ -377,7 +377,7 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         statusEl.textContent = "Not Logged In.";
         settingsPanel.style.display = "none";
-        setTimeout(() => location.href = "login.html", 1000);
+        setTimeout(() => location.href = "/sm/login.html", 1000);
     }
 });
 setInterval(async () => {
