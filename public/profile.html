@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>
+            User Profile
+        </title>
+        <link rel="stylesheet" href="/sm/global.css">
+        <script type="module" src="./sm/profile.js">
+        </script>
+    </head>
+    <body>
+        <center>
+            <div id="profileCard">
+                <div id="loading">
+                    Loading Profile...
+                </div>
+                <div id="profileContent" style="display:none;">
+                    <div class="displayName" id="displayName">
+                    </div>
+                    <hr>
+                    <div class="bio" id="bio">
+                    </div>
+                    <hr>
+                    <div class="uid" id="uid">
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <button id="messageUserBtn">
+                        Message
+                    </button>
+                    <a class="button" href="chat.html">
+                        Back To Chat
+                    </a>
+                </div>
+                <div id="error" class="error" style="display:none;">
+                </div>
+            </div>
+        </center>
+    </body>
+</html>
