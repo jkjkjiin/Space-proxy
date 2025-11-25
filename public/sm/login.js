@@ -35,7 +35,7 @@ resetMenu.appendChild(submitResetDataBtn);
 document.body.appendChild(resetMenu);
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        window.location.href = "/settings.html";
+        window.location.href = "/sm/settings.html";
     }
 });
 async function handleLogin() {
@@ -47,7 +47,7 @@ async function handleLogin() {
     }
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "/settings.html";
+        window.location.href = "/sm/settings.html";
     } catch (error) {
         if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password") {
             showError("Invalid Credentials.");
