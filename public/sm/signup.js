@@ -18,7 +18,7 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById("signupSection").style.display = "none";
         displayNameSection.style.display = "block";
     } else if (user && user.displayName) {
-        window.location.href = "/settings.html";
+        window.location.href = "/sm/settings.html";
     }
 });
 signupBtn.addEventListener("click", async () => {
@@ -57,8 +57,8 @@ saveDisplayNameBtn.addEventListener("click", async () => {
         showError("Please Enter A Display Name.");
         return;
     }
-    if (displayName.length > 25) {
-        showError("Display Name Cannot Exceed 25 Characters.");
+    if (displayName.length > 20) {
+        showError("Display Name Cannot Exceed 20 Characters.");
         return;
     }
     if (!/^[a-zA-Z0-9 _-]+$/.test(displayName)) {
