@@ -57,8 +57,8 @@ saveDisplayNameBtn.addEventListener("click", async () => {
         showError("Please Enter A Display Name.");
         return;
     }
-    if (displayName.length > 20) {
-        showError("Display Name Cannot Exceed 20 Characters.");
+    if (displayName.length > 25) {
+        showError("Display Name Cannot Exceed 25 Characters.");
         return;
     }
     if (!/^[a-zA-Z0-9 _-]+$/.test(displayName)) {
@@ -92,7 +92,7 @@ saveDisplayNameBtn.addEventListener("click", async () => {
         await update(userProfileRef, {
             displayName: displayName,
         });
-        window.location.href = "/settings.html";
+        window.location.href = "/sm/settings.html";
     } catch (error) {
         if (error.code === "permission-denied") {
             return;
