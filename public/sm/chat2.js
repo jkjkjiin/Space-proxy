@@ -460,6 +460,7 @@ async function renderMessageInstant(id, msg) {
                 get(ref(db, `users/${msg.sender}/profile/pic`)),
                 get(ref(db, `users/${msg.sender}/settings/badgeText`)),
                 get(ref(db, `users/${msg.sender}/profile/isAdmin`)),
+                get(ref(db, `users/${msg.sender}/profile/Co-Owner`)),
                 get(ref(db, `users/${msg.sender}/profile/isOwner`))
             ]);
             const displayName = nameSnap.exists() ? nameSnap.val() : "User";
@@ -943,7 +944,7 @@ sendBtn.onclick = async () => {
     if (currentPrivateUid) {
         await sendPrivateMessage(currentPrivateUid, outgoingText);
     } else {
-        if (currentPath === "messages/Admin-Chat" && !(isAdmin || isOwner)) {
+        if (currentPath === "messages/admin-Chat" && !(isAdmin || isOwner)) {
             showError("You Cannot Send Messages To Admin Chat.");
             chatInput.value = "";
             return;
