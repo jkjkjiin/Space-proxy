@@ -9,11 +9,11 @@ const errorEl = document.getElementById("error");
 const messageBtn = document.getElementById("messageUserBtn");
 const urlParams = new URLSearchParams(window.location.search);
 let username = decodeURIComponent(urlParams.get("user") || "").trim();
-if (username.toLowerCase() === "hacker41ðŸ’Ž" || username.toLowerCase() === "hacker41 ðŸ’Ž") {
-  username = "hacker41 ðŸ’Ž";
+if (username.toLowerCase() === "example410ðŸ’Ž" || username.toLowerCase() === "example410 ðŸ’Ž") {
+  username = "example410 ðŸ’Ž";
 }
 if (!username) {
-  showError("No Username Specified In The URL. Example: ?user=Nitrix67");
+  showError("No Username Specified In The URL. Example: ?user=example410");
 } else {
   loadUserProfile(username);
 }
