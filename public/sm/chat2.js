@@ -264,7 +264,7 @@ function formatTimestamp(ts) {
     else return `${d.toLocaleDateString()} ${timeString}`;
 }
 function isRestrictedChannel(ch) {
-    return ch === "Admin-Chat";
+    return ch === "admin-Chat";
 }
 async function renderMessageInstant(id, msg) {
     if (document.getElementById("msg-" + id)) return null;
