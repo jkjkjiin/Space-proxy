@@ -1,3 +1,4 @@
+//https://github.com/MercuryWorkshop/workerware
 importScripts("./WWError.js");
 const dbg = console.log.bind(console, "[WorkerWare]");
 const time = console.time.bind(console, "[WorkerWare]");
