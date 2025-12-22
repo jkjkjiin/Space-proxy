@@ -79,7 +79,7 @@ Btw solojoe13 is my peronal main account account        jkjkjiin account is my s
 
 ## og night network Contributors
 
-Thank you to the following people for contributing to og Space.
+Thank you / credits to the following people for contributing to og Space.
 
 <a href="https://gitlab.com/nightnetwork/Space"> <img src="https://contrib.rocks/image?repo=datkat21/space-fix"/> </a>
 
