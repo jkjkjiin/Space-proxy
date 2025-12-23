@@ -238,4 +238,4 @@ app.get("/password", async (req, reply) => {
   return reply.sendFile("password.html");
 });
 
-app.listen({ port }).then(()=>console.log(`Server running on ${port}`));
+app.listen({ port: 2345, host: '0.0.0.0' }).then((address) => console.log(`Server running on ${address}`));
